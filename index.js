@@ -1,6 +1,3 @@
-// MySQL Connection
-
-// server.js
 const express = require("express");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
@@ -8,10 +5,8 @@ const path = require("path");
 
 const app = express();
 
-// Middleware to parse JSON requests
 app.use(express.json());
 
-// MySQL Connection
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -20,14 +15,12 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME,
 });
 
-// Connect
 db.connect((err) => {
   if (err) {
     throw err;
   }
   console.log("MySQL connected");
 
-  // Create Table
   let sql =
     "CREATE TABLE IF NOT EXISTS students(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), email VARCHAR(255), rollNo VARCHAR(255), branch VARCHAR(255), prn VARCHAR(255), semester VARCHAR(255))";
   db.query(sql, (err, result) => {
@@ -36,7 +29,6 @@ db.connect((err) => {
   });
 });
 
-// Insert Student
 app.post("/addstudent", (req, res) => {
   let student = {
     name: req.body.name,
@@ -54,7 +46,6 @@ app.post("/addstudent", (req, res) => {
   });
 });
 
-// Get Students
 app.get("/getstudents", (req, res) => {
   let sql = "SELECT * FROM students";
   db.query(sql, (err, results) => {
@@ -64,7 +55,6 @@ app.get("/getstudents", (req, res) => {
   });
 });
 
-// Delete Student
 app.delete("/deletestudent/:id", (req, res) => {
   let sql = `DELETE FROM students WHERE id = ${req.params.id}`;
   db.query(sql, (err, result) => {
@@ -74,9 +64,7 @@ app.delete("/deletestudent/:id", (req, res) => {
   });
 });
 
-// Serve static files from the public folder
 app.use(express.static(path.join(__dirname, "public")));
 
-// Server Listening
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,5 +1,5 @@
 body {
-  background-image: url("/image.jpg");
+  background-image: url("https://student-management-system-red.vercel.app/image.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
